@@ -1,0 +1,12 @@
+ra-*.html
+.rspec
+/BackendCanchas/log
+/BackendCanchas/tmp
+/BackendCanchas/db/*.sqlite3
+/BackendCanchas/db/*.sqlite3-journal
+/BackendCanchas/public/system
+/BackendCanchas/coverage/
+/BackendCanchas/spec/tmp
+**.orig
+rerun.txt
+pickle-email-*.html
