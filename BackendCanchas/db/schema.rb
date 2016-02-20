@@ -11,21 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160220202338) do
+ActiveRecord::Schema.define(version: 20160220210406) do
 
   create_table "play_fields", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "field_type"
+    t.integer  "user_id"
   end
 
   create_table "reservations", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.date     "at_date"
+    t.string   "confirmation_code"
+    t.integer  "timeslot_id"
   end
 
+  add_index "reservations", ["timeslot_id"], name: "index_reservations_on_timeslot_id"
+
   create_table "timeslots", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.time     "at_time"
+    t.integer  "play_field_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,3 +1,3 @@
 class Reservation < ActiveRecord::Base
-  belongs_to :Timeslot
+  belongs_to :timeslot
 end
