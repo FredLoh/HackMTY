@@ -1,3 +1,6 @@
 # HackMTY
-¡Hola Mundo!
-TESTING 
+
+##Setup
+```
+$
+```
