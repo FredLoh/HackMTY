@@ -46,10 +46,14 @@ router.route('/')
         // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
         var name = req.body.name;
         var players = req.body.players;
+        var hora = req.body.hora;
+        var duration = req.body.duration;
         //call the create function for our database
         mongoose.model('renta').create({
             name: name,
-            players: players
+            players: players,
+            hora: hora,
+            duration: duration
         }, function(err, renta) {
             if (err) {
                 console.log(err);
@@ -196,22 +200,22 @@ router.delete('/:id/edit', function(req, res) {
             return console.error(err);
         } else {
             //remove it from Mongo
-            renta.remove(function(err, renta) {
+            cancha.remove(function(err, cancha) {
                 if (err) {
                     return console.error(err);
                 } else {
                     //Returning success messages saying it was deleted
-                    console.log('DELETE removing ID: ' + renta._id);
+                    console.log('DELETE removing ID: ' + cancha._id);
                     res.format({
                         //HTML returns us back to the main page, or you can create a success page
                         html: function() {
-                            res.redirect("/api/rentas");
+                            res.redirect("/api/canchas");
                         },
                         //JSON returns the item with the message that is has been deleted
                         json: function() {
                             res.json({
                                 message: 'deleted',
-                                item: renta
+                                item: cancha
                             });
                         }
                     });
@@ -220,4 +224,7 @@ router.delete('/:id/edit', function(req, res) {
         }
     });
 });
+module.exports = router;
+
+
 module.exports = router;

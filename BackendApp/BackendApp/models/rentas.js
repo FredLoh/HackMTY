@@ -10,8 +10,10 @@ var RentSchema = new mongoose.Schema({
     },
     players: {
         type: [String],
-        required: true,
+        required: true
     },
+    hora: String,
+    duration: Number
 }, {
     versionKey: false
 });

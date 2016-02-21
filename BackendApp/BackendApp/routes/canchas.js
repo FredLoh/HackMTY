@@ -25,14 +25,6 @@ router.route('/')
             } else {
                 //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
                 res.format({
-                    //HTML response will render the index.jade file in the views/canchas folder. We are also setting "canchas" to be an accessible variable in our jade view
-                    // html: function(){
-                    //     res.render('canchas/index', {
-                    //           title: 'Canchas List',
-                    //           "canchas" : canchas
-                    //       });
-                    // },
-                    //JSON response will show all blobs in JSON format
                     JSON: function() {
                         res.json(canchas);
                     }
@@ -63,14 +55,10 @@ router.route('/')
                 //Cancha has been created
                 console.log('POST creating new cancha: ' + cancha);
                 res.format({
-                    //HTML response will set the location and redirect back to the home page.
                     html: function() {
-                        // If it worked, set the header so the address bar doesn't still say /adduser
                         res.location("/api/canchas");
-                        // And forward to success page
                         res.redirect("/api/canchas");
                     },
-                    //JSON response will show the newly created blob
                     json: function() {
                         res.json(cancha);
                     }
@@ -198,7 +186,7 @@ router.delete('/:id/edit', function(req, res) {
     //find blob by ID
     console.log("Delete REQUEST");
     console.log("Delete REQUEST");
-    console.log("Delete     REQUEST");
+    console.log("Delete REQUEST");
 
     mongoose.model('cancha').findById(req.id, function(err, cancha) {
         if (err) {
