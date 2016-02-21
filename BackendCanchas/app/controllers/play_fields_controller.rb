@@ -1,6 +1,6 @@
 class PlayFieldsController < ApplicationController
   before_action :set_play_field, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:getAvailableHours, :reserveSpot]
 
   # GET /play_fields
   # GET /play_fields.json
