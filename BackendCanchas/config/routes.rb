@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  resources :play_fields
+  #   member do
+  #     post 'getAvailableHours'
+  #   end
+  # end
+  devise_for :users
+
+  get 'api/getAvailableHours/:id/:time', to: 'play_fields#getAvailableHours'
+  root "play_fields#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
