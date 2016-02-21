@@ -1,0 +1,6 @@
+framework module Pods_FutHero {
+  umbrella header "Pods-FutHero-umbrella.h"
+
+  export *
+  module * { export * }
+}

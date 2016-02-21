@@ -22,7 +22,7 @@ router.get('/cancha', function(req, res, next) {
         res.sendStatus(404).end();
     } else if (query.hor < 1 || query.hor > 24) {
         res.sendStatus(404).end();
-    } else if (query.minu < 1 || query.minu > 59) {
+    } else if (query.minu < 0 || query.minu > 59) {
         res.sendStatus(404).end();
     } else {
         var limit = req.query.limit || 10;
