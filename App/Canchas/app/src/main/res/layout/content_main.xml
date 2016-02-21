@@ -17,6 +17,7 @@
 
 
     <TextView
+        android:id="@+id/datetime_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -32,6 +33,55 @@
         android:layout_height="wrap_content"
         android:text="Fecha..."
         android:onClick="pickDate"/>
+
+    <TextView
+        android:id="@+id/timeslots_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:text="Cuanto tiempo?"/>
+
+
+    <LinearLayout
+        android:id="@+id/timeslots_time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:gravity="center_vertical">
+
+        <NumberPicker
+            android:id="@+id/timeslots_hr_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"/>
+
+
+        <NumberPicker
+            android:id="@+id/timeslots_min_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_datepicker"-->
+        <!--android:background="@color/colorAccent"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Fecha..."-->
+        <!--android:onClick="pickDate"/>-->
 
 
 
