@@ -94,7 +94,9 @@ class PlayFieldsController < ApplicationController
   def reserveSpot
     rs = Reservation.new(at_date: params[:date], confirmation_code: SecureRandom.hex, timeslot_id: params[:id])
     rs.save
-    render :json => { rs.confirmation_code }      
+    render :json => { :confirmation_code => rs.confirmation_code }
+
+      
   end
 
   private
