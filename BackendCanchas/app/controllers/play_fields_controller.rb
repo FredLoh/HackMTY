@@ -66,7 +66,7 @@ class PlayFieldsController < ApplicationController
           # timeslot = Timeslot.update( { play_field: @play_field, at_hour: i, available: avail })
           # timeslot.save
         end
-        Timeslot.update(Timeslot.where(play_field: @play_field).order("created_at ASC").pluck(:id), time) 
+        Timeslot.update(Timeslot.where(play_field: @play_field).order("created_at ASC").pluck(:id), time)
         format.html { redirect_to @play_field, notice: 'Play field was successfully updated.' }
         format.json { render :show, status: :ok, location: @play_field }
       else
@@ -96,7 +96,7 @@ class PlayFieldsController < ApplicationController
     rs.save
     render :json => { :confirmation_code => rs.confirmation_code }
 
-      
+
   end
 
   private
