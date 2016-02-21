@@ -200,22 +200,22 @@ router.delete('/:id/edit', function(req, res) {
             return console.error(err);
         } else {
             //remove it from Mongo
-            cancha.remove(function(err, cancha) {
+            renta.remove(function(err, renta) {
                 if (err) {
                     return console.error(err);
                 } else {
                     //Returning success messages saying it was deleted
-                    console.log('DELETE removing ID: ' + cancha._id);
+                    console.log('DELETE removing ID: ' + renta._id);
                     res.format({
                         //HTML returns us back to the main page, or you can create a success page
                         html: function() {
-                            res.redirect("/api/canchas");
+                            res.redirect("/api/rentas");
                         },
                         //JSON returns the item with the message that is has been deleted
                         json: function() {
                             res.json({
                                 message: 'deleted',
-                                item: cancha
+                                item: renta
                             });
                         }
                     });
