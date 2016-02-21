@@ -88,7 +88,7 @@ router.get('/cancha', function(req, res, next) {
 
                             var parsed = JSON.parse(body);
 
-                            
+
                             for(var i = 0; i < parsed.data.length; i++) {
                                 if(parsed.data[i].available == true && parsed.data[i].at_hour == hora) {
                                     //arre.push(parsed.data[i].id);
