@@ -1,3 +1,7 @@
+require "net/http"
+require "uri"
+
+
 class PlayFieldsController < ApplicationController
   before_action :set_play_field, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:getAvailableHours, :reserveSpot]
@@ -48,6 +52,23 @@ class PlayFieldsController < ApplicationController
         format.json { render json: @play_field.errors, status: :unprocessable_entity }
       end
     end
+
+    uri = URI.parse("http://45.55.30.36/api/canchas")
+
+    # Shortcut
+    response = Net::HTTP.post_form(uri, { "uuid" => @play_field.id, "name" => @play_field.name, "latitude" => @play_field.geoloc.split(',')[0], "longitude" => @play_field.geoloc.split(',')[1] } )
+
+    puts response
+    # Full control
+    # http = Net::HTTP.new(uri.host, uri.port)
+
+    # request = Net::HTTP::Post.new(uri.request_uri)
+    # request.set_form_data({"q" => "My query", "per_page" => "50"})
+
+    # Tweak headers, removing this will default to application/x-www-form-urlencoded 
+    # request["Content-Type"] = "application/json"
+
+    # response = http.request(request)
   end
 
   # PATCH/PUT /play_fields/1
