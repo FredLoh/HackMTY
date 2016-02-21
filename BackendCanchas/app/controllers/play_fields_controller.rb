@@ -4,7 +4,7 @@ require "uri"
 
 class PlayFieldsController < ApplicationController
   before_action :set_play_field, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:getAvailableHours, :reserveSpot]
+  before_action :authenticate_user!, except: [:getAvailableHours, :reserveSpot, :getAvailableFields]
 
   # GET /play_fields
   # GET /play_fields.json
@@ -108,16 +108,23 @@ class PlayFieldsController < ApplicationController
   end
 
   def getAvailableHours
-    data = Timeslot.where(play_field_id: params[:id]).where(available:true).joins(:reservations).where( "at_date = DATE(?)", params[:time])
+    q1 = Timeslot.where(play_field_id: params[:id]).joins(:reservations).where( "at_date = DATE(?)", params[:time]).where(available: true)
+    data = Timeslot.where(play_field_id: params[:id]).where(available: true).where.not(id: q1.pluck(:id))
+    # binding.pry
     render :json => {:data => data }
+  end
+
+  def getAvailableFields
+    q1 = Timeslot.where(at_hour: Range.new(params[:start], params[:end])).where(available: true)
+    q1 = q1.where.not(id: q1.joins(:reservations).where("at_date = Date(?)", params[:date]).pluck(:id))
+
+    render :json => {:data => q1 }
   end
 
   def reserveSpot
     rs = Reservation.new(at_date: params[:date], confirmation_code: SecureRandom.hex, timeslot_id: params[:id])
     rs.save
     render :json => { :confirmation_code => rs.confirmation_code }
-
-
   end
 
   private
