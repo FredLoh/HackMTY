@@ -1,7 +1,0 @@
-platform :ios, '8.0'
-use_frameworks!
-
-target 'FutHero' do
-    pod 'SnapKit'
-    pod 'CVCalendar', '~> 1.2.8'
-end
