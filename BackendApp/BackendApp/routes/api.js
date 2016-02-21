@@ -51,6 +51,7 @@ router.get('/cancha', function(req, res, next) {
         var limit = req.query.limit || 100;
         // get the max distance or set it to 8 kilometers
         var maxDistance = req.query.dist || 100;
+        var maxDistance = maxDistance * 1000;
 
         http.request(options, callback).end();
 
