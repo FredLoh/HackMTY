@@ -18,9 +18,10 @@ var LocationSchema = new mongoose.Schema({
         required: true,
         index: '2dsphere'
     },
-    rentas: [{
-        id: String
-    }],
+    rentas: {
+        type: [Number],
+    },
+
     update_date: Date
 }, {
     versionKey: false

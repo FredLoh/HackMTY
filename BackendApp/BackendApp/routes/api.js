@@ -53,7 +53,7 @@ router.get('/cancha', function(req, res, next) {
         maxDistance = maxDistance * 15;
 
         http.request(options, callback).end();
-
+        var hora = req.query.hor;
         // we need to convert the distance to radians
         // the raduis of Earth is approximately 6371 kilometers
         maxDistance /= 6371;
@@ -64,20 +64,57 @@ router.get('/cancha', function(req, res, next) {
             location: {
                 $near: coords,
                 $maxDistance: maxDistance
-            },
+            }
         }).limit(limit).exec(function(err, locations) {
             if (err) {
                 res.json({});
                 res.end();
             } else {
-                //function(err) {
-                //
-                //}
-                res.json(locations);
+                var arreglo = [];
+                itemsProcessed = 0;
+                locations.forEach(function(entry) {
+                    console.log("UUID: " + entry.uuid);
+                    http.get({
+                        host: '45.55.30.36',
+                        path: '/api/getAvailableHours/' + entry.uuid + '/2016-02-21',
+                        port: 3000
+                    }, function(response) {
+                        // Continuously update stream with data
+                        var body = '';
+                        response.on('data', function(d) {
+                            body += d;
+                        });
+                        response.on('end', function() {
+
+                            var parsed = JSON.parse(body);
+
+
+                            for(var i = 0; i < parsed.data.length; i++) {
+                                if(parsed.data[i].available == true && parsed.data[i].at_hour == hora) {
+                                    //arre.push(parsed.data[i].id);
+                                    console.log(parsed.data[i].id);
+                                    entry['rentas'].push(parsed.data[i].id);
+                                    arreglo.push(entry);
+                                    console.log(arreglo);
+                                }
+                            }
+
+
+
+                            itemsProcessed++;
+                            if (itemsProcessed == locations.length) {
+                                callback()
+                            }
+                        });
+                    });
+                });
+                function callback() {
+                    console.log(arreglo);
+                    res.json(arreglo)
+                }
             }
         });
     }
 });
-
 
 module.exports = router;
