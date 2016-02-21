@@ -1,0 +1,11 @@
+p#notice = notice
+
+p
+  = @play_field.name
+br
+p
+  = @play_field.field_type
+
+= link_to 'Edit', edit_play_field_path(@play_field)
+' | 
+= link_to 'Back', play_fields_path

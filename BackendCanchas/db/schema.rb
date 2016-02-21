@@ -11,13 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160220210406) do
+ActiveRecord::Schema.define(version: 20160221070715) do
 
   create_table "play_fields", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "field_type"
     t.integer  "user_id"
+    t.string   "name"
+    t.string   "geoloc"
   end
 
   create_table "reservations", force: :cascade do |t|
@@ -33,8 +35,9 @@ ActiveRecord::Schema.define(version: 20160220210406) do
   create_table "timeslots", force: :cascade do |t|
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.time     "at_time"
     t.integer  "play_field_id"
+    t.boolean  "available"
+    t.integer  "at_hour"
   end
 
   create_table "users", force: :cascade do |t|
