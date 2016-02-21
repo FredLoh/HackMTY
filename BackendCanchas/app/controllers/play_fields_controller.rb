@@ -21,6 +21,7 @@ class PlayFieldsController < ApplicationController
   # GET /play_fields/new
   def new
     @play_field = PlayField.new
+    @play_field.geoloc = "25.650637336352496,-100.28975058746335"
   end
 
   # GET /play_fields/1/edit
@@ -37,7 +38,7 @@ class PlayFieldsController < ApplicationController
       if @play_field.save
         for i in 0..23
           # binding.pry
-          if params[:times][i.to_s]
+          if params[:times] && params[:times][i.to_s]
             avail = true
           else
             avail = false
@@ -79,7 +80,7 @@ class PlayFieldsController < ApplicationController
       if @play_field.update(play_field_params)
         time = Hash.new
         for i in 0..23
-          if params[:times][i.to_s]
+          if params[:time] && params[:times][i.to_s]
            time[i] = {available: true}
           else
             time[i] = {available: false}
