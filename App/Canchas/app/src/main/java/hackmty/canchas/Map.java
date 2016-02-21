@@ -489,13 +489,18 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                         JSONArray jarr = obj.getJSONArray("rentas");
 
 
-                        Cancha cancha = new Cancha(o_id,o_name,o_lng,o_lat);
-                        cancha.setDist(dist);
-                        cancha.setTimes(start,end);
+                        if(jarr.length() != 0) {
 
-                        cancha.setTimeslots(jarr);
 
-                        canchas.add(cancha);
+                            Cancha cancha = new Cancha(o_id, o_name, o_lng, o_lat);
+                            cancha.setDist(dist);
+                            cancha.setTimes(start, end);
+
+                            cancha.setTimeslots(jarr);
+
+                            canchas.add(cancha);
+
+                        }
 
 
                     }

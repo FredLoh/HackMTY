@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        urlend = "&year=" + s_year + "&month=" + s_month + "&day=" + s_day ;
+        urlend = "&year=" + s_year + "&month=" + (s_month+1) + "&day=" + s_day ;
 
 
         endtime = s_hour;
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        date = s_year + "-" + s_month + "-" + s_day;
+        date = s_year + "-" + (s_month+1) + "-" + s_day;
 
 
         urlend += "&start_time=" + s_hour + "&end_time=" + endtime;
@@ -418,13 +418,17 @@ public class MainActivity extends AppCompatActivity
 
                         Log.i("main_dist", dist + "");
 
-                        Cancha cancha = new Cancha(o_id,o_name,o_lng,o_lat);
-                        cancha.setDist(dist);
-                        cancha.setTimes(s_hour, endtime);
 
-                        cancha.setTimeslots(jarr);
+                        if(jarr.length() != 0) {
+                            Cancha cancha = new Cancha(o_id, o_name, o_lng, o_lat);
+                            cancha.setDist(dist);
+                            cancha.setTimes(s_hour, endtime);
 
-                        canchas.add(cancha);
+                            cancha.setTimeslots(jarr);
+
+                            canchas.add(cancha);
+
+                        }
 
 
 
