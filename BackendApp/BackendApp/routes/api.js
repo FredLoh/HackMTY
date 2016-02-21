@@ -48,10 +48,10 @@ router.get('/cancha', function(req, res, next) {
     } else if (query.minu < 0 || query.minu > 59) {
         res.sendStatus(404).end();
     } else {
-        var limit = req.query.limit || 10;
+        var limit = req.query.limit || 5;
         // get the max distance or set it to 8 kilometers
-        var maxDistance = req.query.dist || 10;
-        var maxDistance = maxDistance * 1000;
+        var maxDistance = req.query.dist || 30;
+        var maxDistance = maxDistance * 15;
 
         http.request(options, callback).end();
 
@@ -65,7 +65,7 @@ router.get('/cancha', function(req, res, next) {
             location: {
                 $near: coords,
                 $maxDistance: maxDistance
-            }
+            },
         }).limit(limit).exec(function(err, locations) {
             if (err) {
                 res.json({});
