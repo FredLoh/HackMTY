@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   get 'api/getAvailableHours/:id/:time', to: 'play_fields#getAvailableHours'
   get 'api/reserveSpot/:id/:date', to: 'play_fields#reserveSpot'
+  get 'api/getAvailableFields/:id/:start/:end/:date', to: 'play_fields#getAvailableFields'
   root "play_fields#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
