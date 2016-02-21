@@ -88,11 +88,7 @@ class PlayFieldsController < ApplicationController
 
   def getAvailableHours
     data = Timeslot.where(play_field_id: params[:id]).where(available:true).joins(:reservations).where( "at_date = DATE(?)", params[:time])
-    respond_to do |format|
-      format.json do
-        render data.to_json
-      end
-    end
+    render :json => {:data => data }
   end
 
   private
