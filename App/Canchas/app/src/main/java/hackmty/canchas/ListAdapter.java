@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+
+import org.json.JSONException;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -37,7 +40,7 @@ public class ListAdapter extends ArrayAdapter<Cancha>{
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
 
@@ -48,6 +51,7 @@ public class ListAdapter extends ArrayAdapter<Cancha>{
             holder.tvNombre = (TextView)convertView.findViewById(R.id.ltv_name);
             holder.tvCosto = (TextView)convertView.findViewById(R.id.ltv_price);
             holder.tvDist = (TextView)convertView.findViewById(R.id.ltv_dist);
+            holder.btn = (Button) convertView.findViewById(R.id.btn_rentar);
 
 
             convertView.setTag(holder);
@@ -82,11 +86,18 @@ public class ListAdapter extends ArrayAdapter<Cancha>{
 
 
         holder.tvDist.setText( distanceOutput );
+
+        holder.tvCosto.setText(ArrayListCanchas.get(position).getTimes());
 //        holder.tvNombre.setTypeface(osl);
 
 
         return convertView;
     }
+
+
+
+
+
 
     static class ViewHolder{
 
@@ -94,5 +105,8 @@ public class ListAdapter extends ArrayAdapter<Cancha>{
         public TextView tvCosto;
         public TextView tvDist;
 
+        public Button btn;
     }
+
+
 }

@@ -60,12 +60,14 @@ public class MainActivity extends AppCompatActivity
 
     private static final String STATE_RESOLVING_ERROR = "resolving_error";
 
-    int s_year, s_month, s_day, s_hour, s_min;
+    int s_year, s_month, s_day, s_hour, s_min, endtime;
 
     String lat = "25.652061";
     String lng = "-100.286438";
 
     String urlend = "";
+
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -306,7 +308,26 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        urlend = "&year=" + s_year + "&month=" + s_month + "&day=" + s_day + "&hor=" + s_hour + "&minu=" + s_min + "&dur=" + dur;
+        urlend = "&year=" + s_year + "&month=" + s_month + "&day=" + s_day ;
+
+
+        endtime = s_hour;
+
+        if((s_min + dur)%60 == 0 ){
+
+            endtime += (s_min + dur)/60 - 1;
+
+        } else {
+
+            endtime += (s_min + dur)/60 ;
+
+        }
+
+
+        date = s_year + "-" + s_month + "-" + s_day;
+
+
+        urlend += "&start_time=" + s_hour + "&end_time=" + endtime;
 
         String urler = "http://45.55.30.36/api/cancha?lat=" + lat + "&long=" + lng + urlend;
 
@@ -382,6 +403,10 @@ public class MainActivity extends AppCompatActivity
                         String o_lng = obj.getJSONArray("location").get(0).toString();
                         String o_lat = obj.getJSONArray("location").get(1).toString();
 
+                        JSONArray jarr = obj.getJSONArray("rentas");
+
+
+
                         Location loc2 = new Location("");
                         loc2.setLongitude((double) obj.getJSONArray("location").get(0));
                         loc2.setLatitude((double) obj.getJSONArray("location").get(1));
@@ -391,10 +416,14 @@ public class MainActivity extends AppCompatActivity
                         double dist = loc.distanceTo(loc2);
 
 
-                        Log.i("main_dist", dist+"");
+                        Log.i("main_dist", dist + "");
 
                         Cancha cancha = new Cancha(o_id,o_name,o_lng,o_lat);
                         cancha.setDist(dist);
+                        cancha.setTimes(s_hour, endtime);
+
+                        cancha.setTimeslots(jarr);
+
                         canchas.add(cancha);
 
 
@@ -419,6 +448,8 @@ public class MainActivity extends AppCompatActivity
                     i.putExtra("lat" + cnt, c.getLat());
                     i.putExtra("lng" + cnt, c.getLng());
                     i.putExtra("dist" + cnt, c.getDist());
+                    i.putExtra("times" + cnt, c.getTimeslots().toString());
+
 
                     cnt++;
 
@@ -428,6 +459,9 @@ public class MainActivity extends AppCompatActivity
                 i.putExtra("lat", lat);
                 i.putExtra("lng", lng);
                 i.putExtra("urlend", urlend);
+                i.putExtra("start", s_hour);
+                i.putExtra("end", endtime);
+                i.putExtra("date", date);
 
                 startActivity(i);
 

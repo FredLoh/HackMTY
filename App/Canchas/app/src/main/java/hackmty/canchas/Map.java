@@ -1,8 +1,10 @@
 package hackmty.canchas;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -11,9 +13,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,9 +53,14 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap gMap = null;
 
-    private String urlend;
+    private String urlend, date;
 
     private ListAdapter adapter;
+
+    private int start, end;
+
+
+    ListView lv;
 
 
     @Override
@@ -59,13 +68,53 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-//        ListView lv_list = (ListView) findViewById(R.id.list);
-//
-//        ListAdapter adapter = new ListAdapter(getApplicationContext(), R.id.list, canchas);
-//
-//        lv.setAdapter(adapter);
+
+        lv = (ListView) findViewById(R.id.list);
+
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                Log.i("rentrequest", position+"");
+                Cancha c = canchas.get(position);
+
+
+                String timeslot = "0", udate = "";
+
+                if (date != null) {
+                    udate = date;
+                }
+
+
+                for (int i = 0; i < c.getTimeslots().length(); i++) {
+
+                    try {
+
+                        timeslot = c.getTimeslots().getInt(i) + "";
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    String urler = "http://45.55.30.36:3000/api/reserveSpot/" + timeslot + "/" + udate;
+
+
+                    Log.i("URLrent", urler);
+                    new RentAsync().execute(urler);
+
+                }
+
+
+            }
+
+        });
+
 
         adapter = new ListAdapter(getApplicationContext(), R.layout.row_canchalist, canchas);
+
+
 
 //        if(canchas!=null)
 //            lv_list.setAdapter(adapter);
@@ -77,6 +126,63 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
 
         String my_lat = getIntent().getStringExtra("lat");
         String my_lng = getIntent().getStringExtra("lng");
+        start = getIntent().getIntExtra("start", 0);
+        end = getIntent().getIntExtra("end", 0);
+
+        date = getIntent().getStringExtra("date");
+
+
+
+        canchas = new ArrayList<>();
+
+        for (int i = 0; i < num; i++) {
+
+            String id = getIntent().getStringExtra("id" + i);
+            String name = getIntent().getStringExtra("name" + i);
+            String lat = getIntent().getStringExtra("lat" + i);
+            String lng = getIntent().getStringExtra("lng" + i);
+            String times = getIntent().getStringExtra("times" + i);
+
+
+
+            Cancha c = new Cancha(id, name, lng, lat);
+
+            try {
+
+
+                JSONArray arr = new JSONArray(times);
+                c.setTimeslots(arr);
+
+                for(int j = 0; j < c.getTimeslots().length(); j++) {
+                    Log.i("JSONtimeslot", "" + c.getTimeslots().getInt(j));
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            double dist = getIntent().getDoubleExtra("dist" + i, 0);
+
+            c.setDist(dist);
+            c.setTimes(start, end);
+
+            canchas.add(c);
+
+        }
+
+
+
+
+
+
+
+//
+//        ListAdapter adapter = new ListAdapter(getApplicationContext(), R.id.list, canchas);
+//
+//        lv.setAdapter(adapter);
+
+
 
         latLng = new LatLng(Double.parseDouble(my_lat), Double.parseDouble(my_lng));
 
@@ -103,26 +209,15 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
 
 
 
-        canchas = new ArrayList<>();
 
-        for (int i = 0; i < num; i++) {
-
-            String id = getIntent().getStringExtra("id" + i);
-            String name = getIntent().getStringExtra("name" + i);
-            String lat = getIntent().getStringExtra("lat" + i);
-            String lng = getIntent().getStringExtra("lng" + i);
-
-            double dist = getIntent().getDoubleExtra("dist" + i, 0);
-
-            Cancha c = new Cancha(id, name, lng, lat);
-            c.setDist(dist);
-
-            canchas.add(c);
-
-        }
 
 
     }
+
+
+
+
+
 
 
     /**
@@ -186,8 +281,6 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     public void switchView(View v){
 
         LinearLayout ll_map = (LinearLayout) findViewById(R.id.map);
-        ListView lv_list = (ListView)findViewById(R.id.list);
-
         Button btn_sv = (Button) findViewById(R.id.switch_view);
 
         if(ll_map.getVisibility() == View.VISIBLE){
@@ -202,18 +295,24 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
 //            if(adapter!=null)
 //                adapter.clear();
             adapter = new ListAdapter(getApplicationContext(), R.layout.row_canchalist, canchas);
-            lv_list.setAdapter(adapter);
 
 
 
-            lv_list.setVisibility(View.VISIBLE);
+
+
+            lv.setAdapter(adapter);
+
+
+
+
+            lv.setVisibility(View.VISIBLE);
             btn_sv.setText("mapa");
 
 
         } else {
 
             ll_map.setVisibility(View.VISIBLE);
-            lv_list.setVisibility(View.GONE);
+            lv.setVisibility(View.GONE);
             btn_sv.setText("lista");
 
 
@@ -245,8 +344,72 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
+    private class RentAsync extends AsyncTask<String, Void, String> {
 
-    private class SearchAsync extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+
+
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog = new ProgressDialog(Map.this);
+            progressDialog.setMessage("Rentando cancha...");
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+
+            Log.v("url request", params[0]);
+
+            try {
+                return downloadUrl(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            progressDialog.dismiss();
+
+
+            String conf = "      ";
+
+            try {
+                JSONObject jo = new JSONObject(s);
+
+                conf = jo.getString("confirmation_code");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(Map.this);
+            builder.setMessage("Se reservó con éxito:\nConfirmación: " + conf.substring(0, 5))
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //do things
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+
+
+
+        }
+    }
+
+
+        private class SearchAsync extends AsyncTask<String, Void, String> {
 
         ProgressDialog progressDialog;
 
@@ -321,10 +484,17 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                         double dist = loc.distanceTo(loc2);
 
 
-                        Log.i("map_dist", dist+"");
+                        Log.i("map_dist", dist + "");
+
+                        JSONArray jarr = obj.getJSONArray("rentas");
+
 
                         Cancha cancha = new Cancha(o_id,o_name,o_lng,o_lat);
                         cancha.setDist(dist);
+                        cancha.setTimes(start,end);
+
+                        cancha.setTimeslots(jarr);
+
                         canchas.add(cancha);
 
 
@@ -364,9 +534,9 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
             }
 
 
-            ListView lv_list = (ListView)findViewById(R.id.list);
             adapter = new ListAdapter(getApplicationContext(), R.layout.row_canchalist, canchas);
-            lv_list.setAdapter(adapter);
+            lv.setAdapter(adapter);
+
 //            adapter.clear();
 //            adapter.addAll(canchas);
 ////            adapter = new ListAdapter(getApplicationContext(), R.layout.row_canchalist, canchas);
@@ -427,5 +597,12 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     }
 
 
+    public void rentar(Cancha c){
+
+
+
+
+
+    }
 
 }
