@@ -31,10 +31,7 @@ callback = function(response) {
 router.get('/cancha', function(req, res, next) {
     var query = require('url').parse(req.url,true).query;
     if (query.long === "" || query.lat === "" || query.long === undefined || query.lat === undefined || query.day === "" || query.day === undefined
-        || query.month === "" || query.month === undefined || query.year === "" || query.year === undefined || query.hor === "" || query.hor === undefined
-        || query.minu === "" || query.minu === undefined || query.dur === "" || query.dur === undefined ) {
-        res.sendStatus(404).end();
-    } else if (query.dur % 30 != 0) {
+        || query.month === "" || query.month === undefined || query.year === "" || query.year === undefined) {
         res.sendStatus(404).end();
     } else if (query.day < 1 || query.day > 31) {
         res.sendStatus(404).end();
@@ -47,13 +44,17 @@ router.get('/cancha', function(req, res, next) {
     } else if (query.minu < 0 || query.minu > 59) {
         res.sendStatus(404).end();
     } else {
+        var start = query.start_time;
+        var end = query.end_time;
+        var concat = query.year + '-' + query.month + '-' +query.day;
         var limit = req.query.limit || 5;
         // get the max distance or set it to 8 kilometers
         var maxDistance = req.query.dist || 30;
         maxDistance = maxDistance * 15;
 
         http.request(options, callback).end();
-        var hora = req.query.hor;
+
+
         // we need to convert the distance to radians
         // the raduis of Earth is approximately 6371 kilometers
         maxDistance /= 6371;
@@ -74,9 +75,12 @@ router.get('/cancha', function(req, res, next) {
                 itemsProcessed = 0;
                 locations.forEach(function(entry) {
                     console.log("UUID: " + entry.uuid);
+                    console.log('/api/getAvailableFields/' + entry.uuid+ "/" + start + "/" + end + '/' + concat + '/')
                     http.get({
                         host: '45.55.30.36',
-                        path: '/api/getAvailableHours/' + entry.uuid + '/2016-02-21',
+                        //path: '/api/getAvailableHours/' + entry.uuid + '/2016-02-21',
+
+                        path: '/api/getAvailableFields/' + entry.uuid+ "/" + start + "/" + end + '/' + concat + '/',
                         port: 3000
                     }, function(response) {
                         // Continuously update stream with data
@@ -87,18 +91,22 @@ router.get('/cancha', function(req, res, next) {
                         response.on('end', function() {
 
                             var parsed = JSON.parse(body);
-
-
+                            var timeslot_array = [];
+                            console.log(parsed)
                             for(var i = 0; i < parsed.data.length; i++) {
-                                if(parsed.data[i].available == true && parsed.data[i].at_hour == hora) {
+                                //if(parsed.data[i].available == true && parsed.data[i].at_hour == hora) {
                                     //arre.push(parsed.data[i].id);
-                                    console.log(parsed.data[i].id);
-                                    entry['rentas'].push(parsed.data[i].id);
-                                    arreglo.push(entry);
-                                    console.log(arreglo);
-                                }
-                            }
+                                    //console.log(parsed.data[i].id);
+                                    //entry['rentas'].push(parsed.data[i].id);
+                                    //arreglo.push(entry);
+                                    //console.log(arreglo);
+                                timeslot_array.push(parsed.data[i].id);
 
+                                //console.log(arreglo);
+                                //}
+                            }
+                            entry['rentas'] = timeslot_array;
+                            arreglo.push(entry);
 
 
                             itemsProcessed++;
