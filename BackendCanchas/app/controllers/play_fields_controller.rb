@@ -91,6 +91,12 @@ class PlayFieldsController < ApplicationController
     render :json => {:data => data }
   end
 
+  def reserveSpot
+    rs = Reservation.new(at_date: params[:date], confirmation_code: SecureRandom.hex, timeslot_id: params[:id])
+    rs.save
+    render :json => { rs.confirmation_code }      
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_play_field
