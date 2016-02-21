@@ -110,7 +110,7 @@ class PlayFieldsController < ApplicationController
   def getAvailableHours
     q1 = Timeslot.where(play_field_id: params[:id]).joins(:reservations).where( "at_date = DATE(?)", params[:time]).where(available: true)
     data = Timeslot.where(play_field_id: params[:id]).where(available: true).where.not(id: q1.pluck(:id))
-    binding.pry
+    # binding.pry
     render :json => {:data => data }
   end
 
@@ -118,8 +118,6 @@ class PlayFieldsController < ApplicationController
     rs = Reservation.new(at_date: params[:date], confirmation_code: SecureRandom.hex, timeslot_id: params[:id])
     rs.save
     render :json => { :confirmation_code => rs.confirmation_code }
-
-
   end
 
   private
