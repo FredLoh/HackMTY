@@ -8,6 +8,11 @@ var LocationSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    uuid: {
+        type: String,
+        required: true,
+        unique: true
+    },
     location: {
         type: [Number],
         required: true,

@@ -43,21 +43,18 @@ router.route('/')
     //POST a new blob
     .post(function(req, res) {
         console.log("POSTing new Canchas");
+        console.log(req.body);
         // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
         var name = req.body.name;
         var longitude = req.body.longitude;
         var latitude = req.body.latitude;
         var locArray = [longitude, latitude];
-        var datetime = new Date();
-        var open_time_date = req.body.open_time;
-        var close_time_date = req.body.close_time;
+        var uuid = req.body.uuid;
         //call the create function for our database
         mongoose.model('cancha').create({
             name: name,
+            uuid: uuid,
             location: locArray,
-            updated_date: datetime,
-            open_time: open_time_date,
-            close_time: close_time_date
         }, function(err, cancha) {
             if (err) {
                 console.log(err);

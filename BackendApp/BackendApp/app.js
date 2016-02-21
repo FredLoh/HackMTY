@@ -11,6 +11,7 @@ var renta = require('./models/rentas');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var bitpays = require('./routes/bitcoin');
 var canchas = require('./routes/canchas');
 var api = require('./routes/api');
 var rentas = require('./routes/rentas');
@@ -34,7 +35,9 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/api/canchas', canchas);
 app.use('/api/rentas', rentas);
+app.use('/bitcoin', bitpays);
 app.use('/api', api);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

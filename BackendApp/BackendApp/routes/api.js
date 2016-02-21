@@ -70,6 +70,9 @@ router.get('/cancha', function(req, res, next) {
                 res.json({});
                 res.end();
             } else {
+                function(err) {
+
+                }
                 res.json(locations);
             }
         });

@@ -221,6 +221,3 @@ router.delete('/:id/edit', function(req, res) {
     });
 });
 module.exports = router;
-
-
-module.exports = router;
