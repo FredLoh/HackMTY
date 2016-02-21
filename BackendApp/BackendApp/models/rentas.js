@@ -13,7 +13,8 @@ var RentSchema = new mongoose.Schema({
         required: true
     },
     hora: String,
-    duration: Number
+    duration: Number,
+    cancha_id: Number
 }, {
     versionKey: false
 });

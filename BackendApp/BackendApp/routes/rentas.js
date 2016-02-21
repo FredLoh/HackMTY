@@ -25,14 +25,6 @@ router.route('/')
             } else {
                 //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
                 res.format({
-                    //HTML response will render the index.jade file in the views/canchas folder. We are also setting "canchas" to be an accessible variable in our jade view
-                    // html: function(){
-                    //     res.render('canchas/index', {
-                    //           title: 'Canchas List',
-                    //           "canchas" : canchas
-                    //       });
-                    // },
-                    //JSON response will show all blobs in JSON format
                     JSON: function() {
                         res.json(rentas);
                     }
@@ -48,12 +40,14 @@ router.route('/')
         var players = req.body.players;
         var hora = req.body.hora;
         var duration = req.body.duration;
+        var cancha_id = req.body.cancha_id;
         //call the create function for our database
         mongoose.model('renta').create({
             name: name,
             players: players,
             hora: hora,
-            duration: duration
+            duration: duration,
+            cancha_id: cancha_id
         }, function(err, renta) {
             if (err) {
                 console.log(err);
@@ -71,7 +65,7 @@ router.route('/')
                     },
                     //JSON response will show the newly created blob
                     json: function() {
-                        res.json(rentas);
+                        res.json(renta);
                     }
                 });
             }
