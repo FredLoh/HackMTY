@@ -108,7 +108,9 @@ class PlayFieldsController < ApplicationController
   end
 
   def getAvailableHours
-    data = Timeslot.where(play_field_id: params[:id]).where(available:true).joins(:reservations).where( "at_date = DATE(?)", params[:time])
+    q1 = Timeslot.where(play_field_id: params[:id]).joins(:reservations).where( "at_date = DATE(?)", params[:time]).where(available: true)
+    data = Timeslot.where(play_field_id: params[:id]).where(available: true).where.not(id: q1.pluck(:id))
+    binding.pry
     render :json => {:data => data }
   end
 
