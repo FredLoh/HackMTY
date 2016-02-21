@@ -30,7 +30,6 @@ callback = function(response) {
 /* GET home page. */
 router.get('/cancha', function(req, res, next) {
     var query = require('url').parse(req.url,true).query;
-    //console.log(query);
     if (query.long === "" || query.lat === "" || query.long === undefined || query.lat === undefined || query.day === "" || query.day === undefined
         || query.month === "" || query.month === undefined || query.year === "" || query.year === undefined || query.hor === "" || query.hor === undefined
         || query.minu === "" || query.minu === undefined || query.dur === "" || query.dur === undefined ) {
@@ -51,7 +50,7 @@ router.get('/cancha', function(req, res, next) {
         var limit = req.query.limit || 5;
         // get the max distance or set it to 8 kilometers
         var maxDistance = req.query.dist || 30;
-        var maxDistance = maxDistance * 15;
+        maxDistance = maxDistance * 15;
 
         http.request(options, callback).end();
 

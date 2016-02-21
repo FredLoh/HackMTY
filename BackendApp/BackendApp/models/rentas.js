@@ -2,24 +2,18 @@ var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 var Schema = mongoose.Schema;
 
-var LocationSchema = new mongoose.Schema({
+var RentSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         unique: true
     },
-    location: {
-        type: [Number],
+    players: {
+        type: [String],
         required: true,
-        index: '2dsphere'
     },
-    rentas: [{
-        id: String
-    }],
-    update_date: Date
 }, {
     versionKey: false
 });
 
-LocationSchema.plugin(uniqueValidator);
-mongoose.model('cancha', LocationSchema);
+mongoose.model('renta', RentSchema);
