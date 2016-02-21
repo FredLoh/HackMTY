@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+    h1.
+        Cancha ID #{renta._id}
+
+
+
+    form(action='/api/rentas/#{renta._id}/edit',method='post',name='updaterenta',enctype='application/x-www-form-urlencoded')
+        p Name:
+            input#inputName(type='text', value='#{renta.name}', name='name')
+        p Longitude:
+            input#players(type='text', value='#{renta.players}', name='players')
+        p
+            input(type='hidden',value='PUT',name='_method')
+        p
+            button#btnSubmit(type='submit').
+                Update
+
+
+    form(action='/api/rentas/#{renta._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+        input(type='hidden',value='DELETE',name='_method', id='#{renta.id}')
+        button(type='submit').
+            Delete

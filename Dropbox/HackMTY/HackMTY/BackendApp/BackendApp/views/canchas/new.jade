@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+    h1.
+        #{title}
+    form#formAddCancha(name="addcancha",method="post",action="/api/canchas")
+        p.name Nombre:
+            input#inputName(type="text", placeholder="Cancha Name", name="name")
+        p Longitude:
+            input#inputLatitude(type="text", name="longitude")
+        p Latitude:
+            input#inputLongitude(type="text", name="latitude")
+        p
+            button#btnSubmit(type="submit") submit

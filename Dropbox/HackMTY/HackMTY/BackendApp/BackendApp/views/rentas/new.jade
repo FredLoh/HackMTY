@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+    h1.
+        #{title}
+    form#formAddCancha(name="addrenta",method="post",action="/api/rentas")
+        p.name Nombre:
+            input#inputName(type="text", placeholder="Renta Name", name="name")
+        p Players (comma separated):
+            input#inputLatitude(type="text", name="players")
+        p
+            button#btnSubmit(type="submit") submit
