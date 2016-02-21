@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '54D0A0E55EBC020BEC62950F'
+               BlueprintIdentifier = 'DE42FD746FCB2B0C149839C7'
                BlueprintName = 'Pods-FutHero'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_FutHero.framework'>

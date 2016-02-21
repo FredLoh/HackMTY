@@ -3,5 +3,5 @@ use_frameworks!
 
 target 'FutHero' do
     pod 'SnapKit'
-    pod 'THCalendarDatePicker'
+    pod 'CVCalendar', '~> 1.2.8'
 end

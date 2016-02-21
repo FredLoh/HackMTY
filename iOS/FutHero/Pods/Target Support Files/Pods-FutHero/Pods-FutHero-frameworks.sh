@@ -84,12 +84,10 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods-FutHero/KNSemiModalViewController_hons82.framework"
+  install_framework "Pods-FutHero/CVCalendar.framework"
   install_framework "Pods-FutHero/SnapKit.framework"
-  install_framework "Pods-FutHero/THCalendarDatePicker.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods-FutHero/KNSemiModalViewController_hons82.framework"
+  install_framework "Pods-FutHero/CVCalendar.framework"
   install_framework "Pods-FutHero/SnapKit.framework"
-  install_framework "Pods-FutHero/THCalendarDatePicker.framework"
 fi
