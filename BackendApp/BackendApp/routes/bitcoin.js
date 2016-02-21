@@ -3,8 +3,8 @@ var express = require('express'),
     mongoose = require('mongoose'), //mongo connection
     bodyParser = require('body-parser'), //parses information from POST
     methodOverride = require('method-override'); //used to manipulate POST
-
-var Bitpay = require('bitpay-api');
+//var Bitpay = require('bitpay-api');
+//var bitpay = new BitPay("GQXd8sWMRV4ZZYFeThwbvo");
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -40,20 +40,11 @@ router.route('/')
             }
         });
     })
-    //POST a new blob
     .post(function(req, res) {
-        console.log("POSTing new Renta");
+        console.log("POSTing new Bitpay");
         // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
-        var bitpay = new Bitpay("WHiK1rKAKyZbAroQPQo7iHctfCJhnJ0GSUXiD50ZKWU");
-        order = {
-            price: "100",
-            currency: "USD"
-        };
-        bitpay.createInvoice(order, function test(err, data) {
-            console.log(data)
-        })
 
-        //call the create function for our databas
-    });
+        //call the create function for our database
+        });
 
 module.exports = router;

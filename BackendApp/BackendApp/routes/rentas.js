@@ -46,10 +46,14 @@ router.route('/')
         // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
         var name = req.body.name;
         var players = req.body.players;
+        var hora = req.body.hora;
+        var duration = req.body.duration;
         //call the create function for our database
         mongoose.model('renta').create({
             name: name,
-            players: players
+            players: players,
+            hora: hora,
+            duration: duration
         }, function(err, renta) {
             if (err) {
                 console.log(err);
@@ -220,4 +224,7 @@ router.delete('/:id/edit', function(req, res) {
         }
     });
 });
+module.exports = router;
+
+
 module.exports = router;
